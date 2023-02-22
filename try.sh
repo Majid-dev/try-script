@@ -16,7 +16,7 @@ else
 fi
 
 if [[ -z $TRY_COMMAND ]]; then
-    COMMAND=NULL
+    COMMAND=$NULL
 else 
     COMMAND=$TRY_COMMAND
 fi

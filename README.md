@@ -28,7 +28,7 @@ or via passing arguments as the following options
 
 ### Examples
 ```bash
-./try.sh -i 5 -n <Your Command>
+./try.sh -i 5 -n 10 <Your Command>
 ./try -i 5 <Your Command>
 ./try -i 10 -v <Your Command>
 ```

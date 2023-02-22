@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 #Variabls
+VERBOSE=0
 INTERVAL=10
 NUM=10
 COMMAND="Default"
@@ -9,54 +10,68 @@ function help {
     cat <<EOL 
 Usage $0 [Options] <Command>
 Options:
--i : Intervals in seconds (Default=10)
--n : Number of tries (Default=10)
+    -i : Intervals in seconds (Default=10)
+    -n : Number of tries (Default=10)
+Examples:
+$0 <Command>
+$0 -v <Command>
+$0 -i 5 -v <Command>
+$0 -i 4 -n 8 -v <Command>
 EOL
 }
 
-echo $?
 function is_number {
-    if [[ $1 =~ [^[0-9]+$] ]]; then
-        exit 0
+    if [[ "$1" =~ ^[0-9]+$ ]]; then
+        return 0
     else
-        exit 1
-        echo "not number"
+        return 1
     fi
 }
 
+if [[ $# -eq 0 ]]; then
+    help
+    exit 0
+fi
 
-while [[ $# -ne 0 ]]
-do
+while [[ $# -ne 0 ]]; do
     case $1 in
+
+        -h)
+            help
+            exit 0
+            ;;
+        -v)
+            VERBOSE=1
+            shift 1
+            ;;
         -i)
-        is_number $2
-        if [[ $? -ne 1 ]]; then
-            INTERVAL=$2
-            shift 2
-        else
-            echo "Bad input"
-            help
-        fi
-        ;;
-
+            is_number $2
+            if [[ $? -ne 0 ]]; then
+                help
+                exit 1
+            else
+                INTERVAL=$2
+                shift 2               
+            fi
+            ;;
         -n)
-        if [[ $2 -ne 0 ]]; then
-            NUM=$2
-            shift 2
-        else
-            echo "Bad input"
-            help
-        fi
-        ;;
-
+            is_number $2
+            if [[ $? -ne 0 ]]; then
+                help
+                exit 1
+            else
+                NUM=$2
+                shift 2
+            fi
+            ;;
         *)
-        COMMAND=$1
-        ;;
+            COMMAND=$1
+            ;;
     esac
 
 done
 
-is_number 5
+echo $VERBOSE
 echo $INTERVAL
 echo $NUM
 echo $COMMAND

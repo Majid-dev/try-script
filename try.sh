@@ -4,7 +4,8 @@
 VERBOSE=0
 INTERVAL=10
 NUM=10
-COMMAND="Default"
+COMMAND=""
+SUCCESS=0
 
 function help {
     cat <<EOL 
@@ -12,6 +13,7 @@ Usage $0 [Options] <Command>
 Options:
     -i : Intervals in seconds (Default=10)
     -n : Number of tries (Default=10)
+    -v : Verbose mode
 Examples:
 $0 <Command>
 $0 -v <Command>
@@ -65,13 +67,41 @@ while [[ $# -ne 0 ]]; do
             fi
             ;;
         *)
-            COMMAND=$1
+            COMMAND=$@
+            break
             ;;
     esac
 
 done
 
-echo $VERBOSE
-echo $INTERVAL
-echo $NUM
-echo $COMMAND
+if [[ -z $COMMAND ]]; then
+    help
+    exit 0
+fi
+
+for i in $(seq 1 $NUM)
+do
+    $($COMMAND)
+    if [[ $? -eq 0 ]]; then
+        SUCCESS=1
+        break
+    else
+        if [[ $VERBOSE -eq 1 ]]; then
+            echo "Try $i failed and Wating for $INTERVAL seconds ..."
+        fi
+        sleep $INTERVAL
+    fi
+
+done
+
+if [[ $SUCCESS -eq 1 ]]; then
+    if [[ $VERBOSE -eq 1 ]]; then
+        echo "Command was executed Successfully"
+    fi
+    exit 0
+else
+    if [[ $VERBOSE -eq 1 ]]; then
+        echo "Command execution failed"
+    fi
+    exit 1
+fi

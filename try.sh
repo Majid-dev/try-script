@@ -1,10 +1,27 @@
 #!/usr/bin/bash
 
-#Variabls
+#Try to set values from environment variables otherwise set default values
+
+
+if [[ -z $TRY_INTERVAL ]]; then
+    INTERVAL=10
+else 
+    INTERVAL=$TRY_INTERVAL
+fi
+
+if [[ -z $TRY_NUMBER ]]; then
+    NUM=5
+else 
+    NUM=$TRY_NUMBER
+fi
+
+if [[ -z $TRY_COMMAND ]]; then
+    COMMAND=NULL
+else 
+    COMMAND=$TRY_COMMAND
+fi
+
 VERBOSE=0
-INTERVAL=10
-NUM=10
-COMMAND=""
 SUCCESS=0
 
 function help {

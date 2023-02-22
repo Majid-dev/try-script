@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-#Try to set values from environment variables otherwise set default values
+#Try to set values from environment variables otherwise set default values.
 
 
 if [[ -z $TRY_INTERVAL ]]; then
@@ -104,7 +104,7 @@ do
         break
     else
         if [[ $VERBOSE -eq 1 ]]; then
-            echo "Try $i failed and Wating for $INTERVAL seconds ..."
+            echo "[INFO] Try $i failed and Wating for $INTERVAL seconds ..."
         fi
         sleep $INTERVAL
     fi
@@ -113,12 +113,12 @@ done
 
 if [[ $SUCCESS -eq 1 ]]; then
     if [[ $VERBOSE -eq 1 ]]; then
-        echo "Command was executed Successfully"
+        echo "[INFO] Command was executed Successfully"
     fi
     exit 0
 else
     if [[ $VERBOSE -eq 1 ]]; then
-        echo "Command execution failed"
+        echo "[ERROR] Command execution failed"
     fi
     exit 1
 fi
